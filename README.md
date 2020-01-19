@@ -22,13 +22,13 @@ The goals / steps of this project are the following:
 [image7]: ./output_images/transform_straight_lines_1.png "Transform straight lines"
 [image8]: ./output_images/identify_lines_t3.png "Identify lines"
 [image9]: ./output_images/identify_lines_t5.png "Identify lines"
+[image10]: ./output_images/radii_of_curvature.png "General radius of curvature"
+[image11]: ./output_images/derivatives.png "Derivatives"
+[image12]: ./output_images/radii_of_curvature_P2.png "Radius of curvature"
+[image13]: ./output_images/P2_output_test_1.png "P2 output test 1"
+[image14]: ./output_images/P2_output_test_5.png "P2 output test 5"
 
-[image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
+[video1]: ./output_videos/project_video_output.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
@@ -127,13 +127,27 @@ Two additional functions are found in this file:
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+The radius of curvature at any point x of the function `x = f(y)`  is given as follows:
+![alt text][image10]
+In the case of the second order polynomial, the first and second derivatives are:
+![alt text][image11]
+So, the equation for radius of curvature becomes:
+![alt text][image12]
+
+It is important to take into account that R should be given in meters, so it is needed to convert pixel dimensions to meters. The following conversion is considered:
+```python
+ym_per_pix = 30/720 # meters per pixel in y dimension
+xm_per_pix = 3.7/700 # meters per pixel in x dimension
+```
+Radius is computed using the method compute_radii, which can be found in the class Line, inside line.py.
+In the video the radius during turns is about 800 meters.
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+The function `draw_fill` is found in identify_lines.py and it is in charge of plotting the identified lane area.  Here is an example of my result on a test image:
 
-![alt text][image6]
+![alt text][image13]
+![alt text][image14]
 
 ---
 
@@ -141,7 +155,7 @@ I implemented this step in lines # through # in my code in `yet_another_file.py`
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result in github](./project_video.mp4) or in [YouTube](https://youtu.be/QZk20Z6gOBY)
 
 ---
 
@@ -149,4 +163,8 @@ Here's a [link to my video result](./project_video.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+I developed two techniques in order to improve the performance of my code. The first one consisted in taking the average value of the last 15 coefficients. This is essentially a filter to avoid extreme values when computing the radius of curvature. Inside the class Line, a method called add_coeffs may be found. First, it rules out the coefficients when the differential value is above 190. Thus, strange values are avoid. In addition, the best fit coefficients are computed as the average of the 15 last coefficients.
+
+Furthermore, a filter has been implemented in order to print radius value with smooth variations.
+
+Lane lines detection could be improved by testing different techniques to apply other threshold such as gradient direction or gradient magnitude.
