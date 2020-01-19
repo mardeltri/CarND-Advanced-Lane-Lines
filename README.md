@@ -167,4 +167,8 @@ I developed two techniques in order to improve the performance of my code. The f
 
 Furthermore, a filter has been implemented in order to print radius value with smooth variations.
 
-Lane lines detection could be improved by testing different techniques to apply other threshold such as gradient direction or gradient magnitude.
+Lane lines detection could be improved by testing different techniques to apply others threshold such as gradient direction or gradient magnitude.
+
+This piece of software may likely fail if there are extreme shadows or the pavement color changes abruptly.
+
+It would be interesting to drive down the computing time, for example with the technique suggested in the lesson to reuse the polynomial curves to detect the following line pixels.
