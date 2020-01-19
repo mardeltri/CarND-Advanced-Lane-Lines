@@ -16,6 +16,9 @@ The goals / steps of this project are the following:
 [image1]: ./output_images/undistort_output_c1.png "Undistorted (calibration)"
 [image2]: ./output_images/undistort_test5.png "Distorted correction"
 [image3]: ./output_images/undistort_test5_weighted.png "Distorted correction weighted"
+[image4]: ./output_images/P2output_test1.png "Transform 1"
+[image5]: ./output_images/P2output_test4.png "Transform 4"
+[image6]: ./output_images/P2output_test5.png "Transform 5"
 [image2]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
@@ -60,13 +63,17 @@ where img is the image to be corrected and self._mtx and self._dist are computed
 Next picture shows the distorted image and the same undistorted.
 
 ![alt text][image2]
+
+Below a weighted image has been depicted in order to check distortion correction.
 ![alt text][image3]
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
 I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
-
-![alt text][image3]
+A class was created in order to compute the thresholded binary image. This class contains different methods and a pipeline which applies those ones. For these project, sobel operator along the x direction and HLS color space are used. Using these techniques lines are detected quite well as it can be checked below.
+![alt text][image4]
+![alt text][image5]
+![alt text][image6]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
