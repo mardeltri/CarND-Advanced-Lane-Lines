@@ -26,7 +26,7 @@ class main_P2():
         warped = self._perspective_transformer.warp(self._thresholded)
         out_img = fit_polynomial(warped, self._left_line, self._right_line)
         result = draw_fill(warped,self._left_line,self._right_line,self._perspective_transformer, self._undistorted)
-        result = add_radius2img(result, self._left_line, self._right_line)
+#         result = add_radius2img(result, self._left_line, self._right_line)
         
     
         return result
@@ -34,18 +34,22 @@ class main_P2():
 if __name__ == '__main__':
     P2 = main_P2('..\\camera_cal\\')
     if IMAGE:
-        image = mpimg.imread('..\\test_images\\test4.jpg')
-        result = P2.process(image)
-        # Visualize undistortion
-        f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
-        f.tight_layout()
-        ax1.imshow(image)
-        ax1.set_title('Original Image', fontsize=50)
-        ax2.imshow(result)
-        ax2.set_title('Undistorted Image', fontsize=50)
-        plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
-    #     plt.savefig('output_images/undistort_output_c'+str(idx+1)+'.png')
-        plt.show()
+        for test in range(1,6):
+#             test = 1
+            image = mpimg.imread('..\\test_images\\test'+str(test)+'.jpg')
+            result = P2.process(image)
+            # Visualize undistortion
+    #         f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
+    #         f.tight_layout()
+    #         ax1.imshow(image)
+    #         ax1.set_title('Original Image', fontsize=50)
+    #         ax2.imshow(result)
+    #         ax2.set_title('Undistorted Image', fontsize=50)
+    #         plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
+            plt.imshow(result)
+            plt.axis('off')
+            plt.savefig('..\\output_images\\P2_output_test_'+str(test)+'.png')
+#             plt.show()
     else:
         video = VideoFileClip("..\\project_video.mp4")
         output_video = video.fl_image(P2.process)

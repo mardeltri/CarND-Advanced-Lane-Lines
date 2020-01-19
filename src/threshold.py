@@ -95,9 +95,11 @@ class Thresholds():
         #combined[((s_binary == 1) & (sxbinary == 1)) | ((mag_binary == 1) & (dir_binary == 1))] = 1
         return combined
 
-if __name__ == '__main__':    
-    image = mpimg.imread('..\\test_images\\test4.jpg')
-    result = pipeline(image)
+if __name__ == '__main__':
+    test = 5
+    image = mpimg.imread('..\\test_images\\test' +str(test)+'.jpg')
+    threshold = Thresholds(image)
+    result = threshold.pipeline()
 
     # Plot the result
     f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
@@ -109,4 +111,4 @@ if __name__ == '__main__':
     ax2.imshow(result)
     ax2.set_title('Pipeline Result', fontsize=40)
     plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
-    plt.savefig('..\\output_images\\P2output.png')
+    plt.savefig('..\\output_images\\P2output_test' +str(test)+'.png')

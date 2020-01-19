@@ -71,8 +71,9 @@ class CalibrateCamera():
         return calibration_data
     
 if __name__ == '__main__':
-    cam_calibration = CalibrateCamera('..\\camera_cal\\', chessboard_shape)
-    img = cv2.imread('..\\camera_cal\\calibration1.jpg')
+    cam_calibration = CalibrateCamera('..\\camera_cal\\', CHESSBOARD_SHAPE)
+#     img = cv2.imread('..\\camera_cal\\calibration1.jpg')
+    img = mpimg.imread('..\\test_images\\test5.jpg')
     undist = cam_calibration.undistort(img)
     # Visualize undistortion
     f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
@@ -82,5 +83,11 @@ if __name__ == '__main__':
     ax2.imshow(undist)
     ax2.set_title('Undistorted Image', fontsize=50)
     plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
-#     plt.savefig('output_images/undistort_output_c'+str(idx+1)+'.png')
+    plt.savefig('..\\output_images\\undistort_test5.png')
     plt.show()
+    
+    result = cv2.addWeighted(img, 0.8, undist, 0.5, 0)
+    plt.imshow(result)
+    plt.axis('off')
+    plt.savefig('..\\output_images\\undistort_test5_weighted.png')
+#     plt.show()

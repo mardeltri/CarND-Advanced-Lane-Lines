@@ -2,7 +2,11 @@ import numpy as np
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import cv2
-
+from line import Line
+from calibration import CalibrateCamera
+from param import CHESSBOARD_SHAPE
+from threshold import Thresholds
+from transform import PerspectiveTransform
 
 def add_radius2img(img, left_line,right_line):
     font = cv2.FONT_HERSHEY_PLAIN
@@ -10,7 +14,7 @@ def add_radius2img(img, left_line,right_line):
     font_size = 1.2
     avg_curvature = (left_line.filt_radius_of_curvature + right_line.filt_radius_of_curvature)/2
     
-    txt = 'Radius of curvature: {:08.2f} mts.'.format(avg_curvature)
+    txt = 'Radius of curvature: {:08.2f} m'.format(avg_curvature)
     cv2.putText(img, txt, (850, 100), font, font_size, font_color, 1)
     
     car_middle_m = (right_line.x_val_bottom_m + left_line.x_val_bottom_m)/2
@@ -18,7 +22,7 @@ def add_radius2img(img, left_line,right_line):
     print(off_center)
     #off_center = left_line.xm_per_pix * pixels_off_center
 
-    txt = 'Distance from center: {:04.2f} mts ({})'.format(abs(off_center), 'L' if off_center <= 0 else 'R')
+    txt = 'Distance from center: {:04.2f} m ({})'.format(abs(off_center), 'Left' if off_center <= 0 else 'Right')
     cv2.putText(img, txt, (850, 150), font, font_size, font_color)
     return img
 
@@ -169,10 +173,34 @@ def fit_polynomial(binary_warped, left_line, right_line):
 
 if __name__ == '__main__':  
     # Load our image
-    binary_warped = mpimg.imread('output_images/warped_straight_lines1.png')
+    test = 3
+    binary_warped = mpimg.imread('..\\test_images\\test' +str(test)+'.jpg')
+#     binary_warped = mpimg.imread('..\\test_images\\straight_lines1.jpg')
+#     binary_warped = mpimg.imread('..\\output_images\\warped_straight_lines1.png')
     plt.imshow(binary_warped)
+#     plt.show()
 
-    out_img, radius = fit_polynomial(binary_warped)
+    cam_calibration = CalibrateCamera('..\\camera_cal\\', CHESSBOARD_SHAPE)
+    right_line = Line()
+    left_line = Line()
+    undistorted = cam_calibration.undistort(binary_warped)
+    threshold = Thresholds(undistorted)
+    thresholded = threshold.pipeline()
+    perspective_transformer = PerspectiveTransform()
+    warped = perspective_transformer.warp(thresholded)
+    
+    out_img = fit_polynomial(warped, left_line, right_line)
+    
+#     plt.show()
+    plt.axis('off')
+        # Plot the result
+    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
+    f.tight_layout()
 
-    plt.imshow(out_img)
+    ax1.imshow(binary_warped)
+    ax1.set_title('Original Image', fontsize=40)
 
+    ax2.imshow(out_img)
+    ax2.set_title('Pipeline Result', fontsize=40)
+    plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
+    plt.savefig('..\\output_images\\identify_lines_t' +str(test)+'.png')

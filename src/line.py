@@ -43,7 +43,7 @@ class Line():
     def add_coeffs(self, coeffs):
         if np.any(self.best_fit) != None:
             current_diffs = np.abs(self.best_fit - coeffs)
-            if (np.max(current_diffs)>210.0):
+            if (np.max(current_diffs)>190.0):
                 return 
             
         self.current_fit = coeffs
