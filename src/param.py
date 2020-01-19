@@ -1,0 +1,1 @@
+CHESSBOARD_SHAPE = (9,6)
