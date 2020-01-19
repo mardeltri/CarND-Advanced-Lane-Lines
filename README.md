@@ -19,6 +19,8 @@ The goals / steps of this project are the following:
 [image4]: ./output_images/P2output_test1.png "Transform 1"
 [image5]: ./output_images/P2output_test4.png "Transform 4"
 [image6]: ./output_images/P2output_test5.png "Transform 5"
+[image7]: ./output_images/transform_straight_lines_1.png "Transform straight lines"
+
 [image2]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
@@ -70,40 +72,43 @@ Below a weighted image has been depicted in order to check distortion correction
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
 I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
-A class was created in order to compute the thresholded binary image. This class contains different methods and a pipeline which applies those ones. For these project, sobel operator along the x direction and HLS color space are used. Using these techniques lines are detected quite well as it can be checked below.
+A class was created in order to compute the thresholded binary image. This class contains different methods and a pipeline which applies those ones. For these project, sobel operator along the x direction and S channel threshold are used. Using these techniques lines are detected quite well as it can be checked below.
+
 ![alt text][image4]
 ![alt text][image5]
 ![alt text][image6]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The code for perspective transform consists of a class with several methods. Two of them are used to wrap or unwrap images.  The `warp()` function takes as inputs an image (`img`). Source (`src`) and destination (`dst`) points were previously defined as class attributes.  I chose the hardcode the source and destination points in the following manner:
 
 ```python
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
+    # Four source coordinates
+    src = np.float32(
+        [[700, 460],
+        [1055, 685],
+        [254, 685],
+        [582, 460]])
+    # Four desired coordinates
+    dst = np.float32(
+        [[1040, 0],
+        [1040, 685],
+        [250, 685],
+        [250, 0]])
 ```
 
 This resulted in the following source and destination points:
 
 | Source        | Destination   | 
 |:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
+| 700, 460      | 1040, 0       | 
+| 1055, 685     | 1040, 685     |
+| 254, 685      | 250, 685      |
+| 582, 460      | 250, 0        |
 
-I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
+I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image. Line width was set to 1px in order to adjust it precisely.
 
-![alt text][image4]
+![alt text][image7]
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
