@@ -32,8 +32,6 @@ The goals / steps of this project are the following:
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
-
 ---
 
 ### Writeup / README
@@ -163,7 +161,7 @@ Here's a [link to my video result in github](./project_video.mp4) or in [YouTube
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-I developed two techniques in order to improve the performance of my code. The first one consisted in taking the average value of the last 15 coefficients. This is essentially a filter to avoid extreme values when computing the radius of curvature. Inside the class Line, a method called add_coeffs may be found. First, it rules out the coefficients when the differential value is above 190. Thus, strange values are avoid. In addition, the best fit coefficients are computed as the average of the 15 last coefficients.
+I developed two techniques in order to improve the performance of my code. The first one consisted in taking the average value of the last 15 coefficients. This is essentially a filter to avoid extreme values when computing the radius of curvature. Inside the class Line, a method called add_coeffs may be found. First, it rules out the coefficients when the differential value is above 190. Thus, unrealistic values are avoid. In addition, the best fit coefficients are computed as the average of the 15 last coefficients.
 
 Furthermore, a filter has been implemented in order to print radius value with smooth variations.
 
