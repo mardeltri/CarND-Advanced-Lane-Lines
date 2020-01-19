@@ -117,10 +117,10 @@ I verified that my perspective transform was working as expected by drawing the 
 Having the warped image, the identification of the lane lines is carried out. In order to achieve so, the image is splited horizontally and the histogram considering the points in the vertical direction is computed. Histogram peaks indicate the rectangle center position. This procedure is repeated until the hole image is swept. Thus, the pixels which defines the lanes have been found. The next step consists in fitting a second order polynomial to those points.
 
 The previous procedure is implemented in the file identify_lines.py. Two functions are included:
-* fit_polynomial(binary_warped, left_line, right_line): to compute the polynomial coefficients.
-* find_lane_pixels(binary_warped): to detect the lane line pixels using the sliding window method.
+* `fit_polynomial(binary_warped, left_line, right_line)`: to compute the polynomial coefficients.
+* `find_lane_pixels(binary_warped)`: to detect the lane line pixels using the sliding window method.
 Two additional functions are found in this file:
-* draw_fill(warped,left_line,right_line,_perspective_transformer, real_warped_img): to print the detected lane
+* `draw_fill(warped,left_line,right_line,_perspective_transformer, real_warped_img)`: to print the detected lane
 
 ![alt text][image8]
 ![alt text][image9]
