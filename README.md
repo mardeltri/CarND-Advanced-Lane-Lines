@@ -20,6 +20,8 @@ The goals / steps of this project are the following:
 [image5]: ./output_images/P2output_test4.png "Transform 4"
 [image6]: ./output_images/P2output_test5.png "Transform 5"
 [image7]: ./output_images/transform_straight_lines_1.png "Transform straight lines"
+[image8]: ./output_images/identify_lines_t3.png "Identify lines"
+[image9]: ./output_images/identify_lines_t5.png "Identify lines"
 
 [image2]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
@@ -80,7 +82,7 @@ A class was created in order to compute the thresholded binary image. This class
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for perspective transform consists of a class with several methods. Two of them are used to wrap or unwrap images.  The `warp()` function takes as inputs an image (`img`). Source (`src`) and destination (`dst`) points were previously defined as class attributes.  I chose the hardcode the source and destination points in the following manner:
+The code for perspective transform consists of a class named PerspectiveTransform with several methods. This code can be found in the file transform.py. Two of those methods are used to wrap or unwrap images.  The `warp()` function takes as inputs an image (`img`). Source (`src`) and destination (`dst`) points were previously defined as class attributes.  I chose the hardcode the source and destination points in the following manner:
 
 ```python
     # Four source coordinates
@@ -112,9 +114,16 @@ I verified that my perspective transform was working as expected by drawing the 
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+Having the warped image, the identification of the lane lines is carried out. In order to achieve so, the image is splited horizontally and the histogram considering the points in the vertical direction is computed. Histogram peaks indicate the rectangle center position. This procedure is repeated until the hole image is swept. Thus, the pixels which defines the lanes have been found. The next step consists in fitting a second order polynomial to those points.
 
-![alt text][image5]
+The previous procedure is implemented in the file identify_lines.py. Two functions are included:
+*fit_polynomial(binary_warped, left_line, right_line): to compute the polynomial coefficients.
+*find_lane_pixels(binary_warped): to detect the lane line pixels using the sliding window method.
+Two additional functions are found in this file:
+*draw_fill(warped,left_line,right_line,_perspective_transformer, real_warped_img): to print the detected lane
+
+![alt text][image8]
+![alt text][image9]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
