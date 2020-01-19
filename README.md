@@ -1,4 +1,4 @@
-**Advanced Lane Finding Project**
+## **Advanced Lane Finding Project**
 
 The goals / steps of this project are the following:
 
@@ -13,7 +13,9 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./output_images/undistort_output_c1.png "Undistorted"
+[image1]: ./output_images/undistort_output_c1.png "Undistorted (calibration)"
+[image2]: ./output_images/undistort_test5.png "Distorted correction"
+[image3]: ./output_images/undistort_test5_weighted.png "Distorted correction weighted"
 [image2]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
@@ -37,12 +39,11 @@ You're reading it!
 
 #### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
-The code for this step is contained in the first code cell of the IPython notebook located in
- "./examples/example.ipynb" (or in lines # through # of the file called `some_file.py`).  
+The code for this step is contained in the file called `calibration.py`. This module contains a class called CalibrateCamera whose inputs are: calibration image path and chessboard shape. This class constructor checks if the current camera has been calibrated or not. If it is, it loads the calibration files (mtx, dist); if not, it calibrates the camera.
 
-I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
+Camera calibration is carried out by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here it is assumed the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time all chessboard corners are detected correctly in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
-I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
+Then, the output `objpoints` and `imgpoints` are used to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  This distortion correction was applied to the test image using the `cv2.undistort()` function and this result was obtained: 
 
 ![alt text][image1]
 
@@ -50,8 +51,16 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 #### 1. Provide an example of a distortion-corrected image.
 
-To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
+Undistortion is carried out using the method undistort defined in the class CalibrateCamera. This one calls this function: 
+```python
+	cv2.undistort(img, self._mtx, self._dist, None, self._mtx)
+```
+where img is the image to be corrected and self._mtx and self._dist are computed by cv2.calibrateCamera.
+
+Next picture shows the distorted image and the same undistorted.
+
 ![alt text][image2]
+![alt text][image3]
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
